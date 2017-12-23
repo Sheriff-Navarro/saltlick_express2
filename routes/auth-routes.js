@@ -73,7 +73,7 @@ router.post('/api/login', (req, res, next) => {
       passport.authenticate('local', (err, theUser, extraInfo) => {
           // Errors prevented us from deciding if login was a success or failure
           if (err) {
-            res.status(500).json({ message: 'Unknown login error 💩' });
+            res.status(500).json({ message: 'Sorry, error during login.' });
             return;
           }
 
@@ -109,5 +109,16 @@ router.post('/api/logout', (req, res, next) => {
   res.status(200).json({ message: 'Logged out successfully.'});
   return;
 })
+
+router.get('/api/checklogin', (req, res, next) => {
+  if(!req.user) {
+    res.status(401).json({message: 'There is no one logged in.'});
+    return;
+  }
+  //Clear the encryptedPassword before sending
+  //(not from the database, just from the object)
+  req.user.encryptedPassword = undefined;
+  res.status(200).json(req.user);
+  });
 
 module.exports = router;
