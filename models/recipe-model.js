@@ -16,7 +16,8 @@ const myRecipeSchema = new Schema({
     default: []
   },
   picture: {
-    type: String
+    type: String,
+    default: ''
   },
   cookTime: {
     type: Number,
