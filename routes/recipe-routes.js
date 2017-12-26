@@ -21,7 +21,9 @@ router.post(
       name: req.body.recipeName,
       serves: req.body.recipeServes,
       cookTime: req.body.recipeCookTime,
-      user: req.user._id
+      user: req.user._id,
+      ingredients: JSON.parse(req.body.recipeIngredients) || [],
+      directions: JSON.parse(req.body.recipeDirections) || []
     });
 
     if (req.file) {
