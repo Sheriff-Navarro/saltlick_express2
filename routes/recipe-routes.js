@@ -75,4 +75,21 @@ router.get('/api/recipes', (req, res, next) => {
 })//close router.get('/api/recipes')
 
 
+router.get('/api/recipes/:id', (req, res, next) => {
+  console.log('recipe', req.params.id);
+  RecipeModel
+  .findById(req.params.id, (err, theRecipe) => {
+    if(err) { return next(err);}
+  })
+  .populate('user', {encryptedPassword : 0 })
+  .exec((err, theRecipe) => {
+    if(err) {
+      res.status(500).json({ message: 'Could not find the recipe'});
+      return;
+    }
+    //I believe this is where the ReviewModel.find would begin
+    res.status(200).json(theRecipe);
+  })
+})
+
 module.exports = router;
