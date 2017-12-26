@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 
 const RecipeModel = require('../models/recipe-model');
-
+const ReviewModel = require('../models/review-model');
 const router = express.Router();
 
 const myUploader = multer({
@@ -91,5 +91,35 @@ router.get('/api/recipes/:id', (req, res, next) => {
     res.status(200).json(theRecipe);
   })
 })
+
+router.post('/api/recipes/:id/newreview', (req, res, next) => {
+  const recipeParamId = req.params.id;
+  const theReview = new ReviewModel({
+    user: req.user._id,
+    recipeId: req.params.id,
+    rating: req.body.reviewRating,
+    review: req.body.reviewReview
+  });
+  theReview.save((err) => {
+    if(err && theReview.errors === undefined) {
+      res.status(500).json({ message: 'Database could not save the recipe'});
+      return;
+    }
+    //Validation error
+    if(err && theReview.errors) {
+      res.status(400).json({
+        reviewError: theReview.errors.review,
+        ratingError: theReview.errors.rating,
+        userError: theReview.errors.user
+      });
+      return;
+    }
+    //Put the full user info here for Angular
+    req.user.encryptedPassword = undefined;
+    theReview.user = req.user;
+    //SUCCESS
+    res.status(200).json(theReview);
+  })//close the recipe.save
+});//close router.post('/api/recipes/:id/newreview')
 
 module.exports = router;
