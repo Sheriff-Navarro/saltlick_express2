@@ -87,9 +87,21 @@ router.get('/api/recipes/:id', (req, res, next) => {
       res.status(500).json({ message: 'Could not find the recipe'});
       return;
     }
+    ReviewModel
+    .find({recipeId: req.params.id}, (err, theReview) => {
+      if (err) {return next(err); }
+    })//end of .find
+    .populate('user', {encryptedPassword: 0 })
+    .exec((err, theReview) => {
+      if(err) {return next(err);}
+      const data = {
+        recipe: theRecipe,
+        review: theReview
+      }
+      res.status(200).json(data);
+    })
     //I believe this is where the ReviewModel.find would begin
-    res.status(200).json(theRecipe);
-  })
+  })//recipe model .exec
 })
 
 router.post('/api/recipes/:id/newreview', (req, res, next) => {
