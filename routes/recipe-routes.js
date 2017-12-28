@@ -105,7 +105,7 @@ router.get('/api/recipes/:id', (req, res, next) => {
 })
 
 router.post('/api/recipes/:id/newreview', (req, res, next) => {
-  const recipeParamId = req.params.id;
+  // const recipeParamId = req.params.id;
   const theReview = new ReviewModel({
     user: req.user._id,
     recipeId: req.params.id,
