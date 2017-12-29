@@ -47,6 +47,8 @@ const myAuthRoutes = require('./routes/auth-routes');
 app.use('/', myAuthRoutes);
 const myRecipeRoutes = require('./routes/recipe-routes');
 app.use('/', myRecipeRoutes);
+const myProfileRoutes = require('./routes/profile-routes');
+app.use('/', myProfileRoutes);
 //ROUTES----------------------------------------------------
 
 
