@@ -11,15 +11,22 @@ const myUploader = multer({
 });
 
 
+
+
 router.get('/api/profile/:id', (req, res, next) => {
   RecipeModel
-  .find({user : req.params.id}, (err, theRecipe) =>{
-    console.log(theRecipe);
-    if(err) { return next(err) }
-  res.status(200).json(theRecipe);
-  })//RecipeMode.find close
-})//router.get close
-
+  .find({user: req.params.id}, (err, theRecipe) => {
+    if(err) {return next(err); }
+  })
+  .populate('user', {encryptedPassword : 0})
+  .exec((err, theRecipe) => {
+    if(err) {
+      res.status(500).json({ message: 'Could not find the recipe'});
+      return;
+    }
+    res.status(200).json(theRecipe)
+  })
+})
 
 
 
