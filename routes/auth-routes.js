@@ -40,6 +40,10 @@ router.post('/api/signup', (req, res, next) => {
             encryptedPassword: scrambledPassword
           });
 
+          // if (req.file) {
+          //   theUser.thumbnail = '/uploads' + req.file.filename)
+          // }
+
           theUser.save((err) => {
               if (err) {
                 res.status(500).json({ message: 'User save went to 💩' });
