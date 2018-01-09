@@ -22,6 +22,7 @@ router.post(
       serves: req.body.recipeServes,
       cookTime: req.body.recipeCookTime,
       user: req.user._id,
+      kindOfDish: req.body.recipeType,
       ingredients: JSON.parse(req.body.recipeIngredients) || [],
       directions: JSON.parse(req.body.recipeDirections) || []
     });

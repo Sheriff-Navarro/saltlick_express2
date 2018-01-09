@@ -29,7 +29,7 @@ const myRecipeSchema = new Schema({
   },
   kindOfDish: {
         type: String,
-        enum: ['Appetizer', 'Entré', 'Dessert', 'Snack', 'Drink'],
+        // enum: ['Appetizer', 'Entré', 'Dessert', 'Snack', 'Drink'],
         default: 'Entré'
     },
    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
