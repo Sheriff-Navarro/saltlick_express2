@@ -16,9 +16,9 @@ const myUserSchema = new Schema(
       type: String,
       required: true
     },
-    thumbnail: {
+    picture: {
       type: String,
-      required: false
+      default: '../../assets/images/user.svg'
     },
   savedRecipes: [],
   paidRecipes: []

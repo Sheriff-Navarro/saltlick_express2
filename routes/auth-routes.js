@@ -37,7 +37,8 @@ router.post('/api/signup', (req, res, next) => {
           const theUser = new UserModel({
             fullName: req.body.signupFullName,
             email: req.body.signupEmail,
-            encryptedPassword: scrambledPassword
+            encryptedPassword: scrambledPassword,
+            picture: req.body.signupPicture
           });
 
           // if (req.file) {
