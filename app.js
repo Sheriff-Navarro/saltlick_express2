@@ -39,7 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({
   credentials: true,                   // allow other domains to send cookies
-  origin: [ 'http://localhost:4200' ]  // these are the domains that are allowed
+  origin: [ 'http://localhost:3000' ]  // these are the domains that are allowed
 }));
 
 //ROUTES----------------------------------------------------
