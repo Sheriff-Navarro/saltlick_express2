@@ -20,13 +20,15 @@ const myUserSchema = new Schema(
       type: String,
       default: '../../assets/images/user.svg'
     },
-  savedRecipes: [],
+  savedRecipes: [{type: Schema.Types.ObjectId, ref: 'Recipe', required: true}],
   paidRecipes: []
   },
   {
     timestamps: true
   }
 );
+
+// recipeId: {type: Schema.Types.ObjectId, ref: 'Recipe', required: true},
 
 const UserModel = mongoose.model('User', myUserSchema);
 

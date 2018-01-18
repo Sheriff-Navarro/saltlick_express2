@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-
+const UserModel = require('../models/user-model');
 const RecipeModel = require('../models/recipe-model');
 const ReviewModel = require('../models/review-model');
 const router = express.Router();
@@ -56,11 +56,7 @@ router.post(
   }); // close router.post('/api/recipes')
 
 router.get('/api/recipes', (req, res, next) => {
-  // if (!req.user) {
-  //   res.status(401).json({ message: 'Log in to see recipes'})
-  //   return;
-  // }
-  //Commented out because I want unauthorized users to be able to see recipes
+
   RecipeModel
   .find()
   //retrieve all the info of the owners (needs "ref" in the model)
@@ -104,6 +100,41 @@ router.get('/api/recipes/:id', (req, res, next) => {
     //I believe this is where the ReviewModel.find would begin
   })//recipe model .exec
 })
+
+router.post('/api/recipes/:id/follow',(req, res, next)=>{
+  const recipeId = req.params.id;
+  console.log("recipeId ", req.params.id);
+
+  UserModel
+  .findById(req.user._id, (err, theUser) => {
+    if (err) {
+      res.json(err);
+      return;
+    }
+
+  RecipeModel.findById(recipeId, (err, theRecipe)=>{
+    if (err) {
+      res.json(err);
+      return;
+    }
+    if (theRecipe) {
+
+      theUser.savedRecipes.push(theRecipe);
+      theUser.save((err)=>{
+        if (err) {
+            res.json(err);
+            return;
+          }
+        res.json(theRecipe);
+        });
+      }
+    });
+  });
+});
+
+
+
+
 
 router.post('/api/recipes/:id/newreview', (req, res, next) => {
   // const recipeParamId = req.params.id;
