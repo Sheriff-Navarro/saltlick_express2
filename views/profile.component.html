@@ -1,0 +1,236 @@
+<app-navbar></app-navbar>
+
+<div class="container" id="page">
+  <div class="row">
+    <div class="col-md-3">
+      <div id="profileSideBar" class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <img id="profileImg" src="{{data.user.picture}}" class="img-circle crtr center-block img-responsive" >
+            <div id="profileName"class="col-md-12">
+            {{data.user.fullName}}
+          </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <button type="button" class="btn btn-primary col-sm-8" id="createRecButt" data-toggle="modal" data-target="#exampleModal" style="
+            margin-top: 40px;">
+            <span class="glyphicon glyphicon-plus"></span>  Recipe</button>
+          <div class="col-sm-2"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 recipeSideBar">
+            <span class=""> RECIPES</span>
+              <p class="count">{{data.recipe.length}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ul class="nav nav-pills">
+<li class="active"><a data-toggle="pill" href="#home">My Recipes</a></li>
+<li><a data-toggle="pill" href="#menu1">Bookmarked Recipes</a></li>
+<!-- <li><a data-toggle="pill" href="#menu2">Menu 2</a></li> -->
+</ul>
+
+<div class="tab-content">
+<div id="home" class="tab-pane fade in active">
+  <hr class="line">
+  <div class = "row">
+  <div  class = "col-sm-4" *ngFor = "let recipe of data.recipe">
+  <div [routerLink]="['/recipe', recipe._id]" id="eachRecipe" class = "col-sm-12 container" >
+    <div class = "row ">
+      <div class="col-sm-12" id="withinRecipe">
+        <img *ngIf = "recipe.picture" [src]="baseUrl + recipe.picture" class="img-thumbnail" alt="Responsive image">
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+        <p id="recipeNamed" [routerLink]="['/recipe', recipe._id]">{{recipe.name}}</p>
+        <p id="cookTime"> <span class = "	glyphicon glyphicon-time"></span> <b >{{recipe.cookTime}}</b> Minutes </p>
+        <!-- <div id="recipeCreator"class="row">
+          <div [routerLink]="['/profile', recipe.user._id]" class="col-md-12 rcpeCrtr" >
+            <img src="{{recipe.user.picture}}" class="img-circle crtr" >
+            <span id="reviewName">{{recipe.user.fullName}}</span>
+          </div>
+        </div> -->
+        <!-- <p id="recipeCreator">Recipe Creator: <b id="creator1"     [routerLink]="['/profile', recipe.user._id]"
+        >{{recipe.user.fullName}}</b></p> -->
+        </div>
+      </div>
+
+  </div>
+  <!-- end of row -->
+  </div>
+  <!-- end of container -->
+  </div>
+  </div>
+  <!-- end of outside row -->
+
+</div>
+<div id="menu1" class="tab-pane fade">
+  <hr class="line">
+  <h3>Find all your bookmarked recipes here!</h3>
+  <div class = "row">
+  <div  class = "col-sm-4" *ngFor = "let recipe of data.user.savedRecipes">
+  <div [routerLink]="['/recipe', recipe._id]" id="eachRecipe" class = "col-sm-12 container" >
+    <div class = "row ">
+      <div class="col-sm-12" id="withinRecipe">
+        <img *ngIf = "recipe.picture" [src]="baseUrl + recipe.picture" class="img-thumbnail" alt="Responsive image">
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+        <p id="recipeNamed" [routerLink]="['/recipe', recipe._id]">{{recipe.name}}</p>
+        <p id="cookTime"> <span class = "	glyphicon glyphicon-time"></span> <b >{{recipe.cookTime}}</b> Minutes </p>
+        <!-- <div id="recipeCreator"class="row">
+          <div [routerLink]="['/profile', recipe.user._id]" class="col-md-12 rcpeCrtr" >
+            <img src="{{recipe.user.picture}}" class="img-circle crtr" >
+            <span id="reviewName">{{recipe.user.fullName}}</span>
+          </div>
+        </div> -->
+        <!-- <div id="recipeCreator"class="row">
+          <div [routerLink]="['/profile', recipe.user._id]" class="col-md-12 rcpeCrtr" >
+            <img src="{{recipe.user.picture}}" class="img-circle crtr" >
+            <span id="reviewName">{{recipe.user.fullName}}</span>
+          </div>
+        </div> -->
+        <!-- <p id="recipeCreator">Recipe Creator: <b id="creator1"     [routerLink]="['/profile', recipe.user._id]"
+        >{{recipe.user.fullName}}</b></p> -->
+        </div>
+      </div>
+
+  </div>
+  <!-- end of row -->
+  </div>
+  <!-- end of container -->
+  </div>
+  </div>
+  <!-- end of outside row -->
+</div>
+
+</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> Create a Recipe</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="recipeForm">
+          <p *ngIf = "saveError" class = "error">
+            {{saveError}}
+          </p>
+        <form (ngSubmit) = "saveNewRecipe()">
+          <div class="form-row">
+            <div class = "form-group col-md-6">
+            <label for="recipe-name-input"> Recipe Name </label>
+            <input class = "form-control" type = "text" id="recipe-name-input" placeholder=" Spaghetti and Meatballs" [(ngModel)] = "recipeInfo.recipeName" name = "recipeName">
+          </div>
+          <div class = "form-group col-md-6">
+                <label for="exampleFormControlSelect1">Recipe Type</label>
+                <select class="form-control" id="recipeType" [(ngModel)] = "recipeInfo.recipeType" name="recipeType">
+                  <option>Appetizer</option>
+                  <option>Entré</option>
+                  <option>Dessert</option>
+                  <option>Snack</option>
+                  <option>Drink</option>
+                </select>
+          </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="recipe-serves-input"> Recipe Serves how many ?  </label>
+              <input class = "form-control" type = "text" id="recipe-serves-input" placeholder=" 4" [(ngModel)] = "recipeInfo.recipeServes" name = "recipeServes">
+            </div>
+           <div class="form-group col-md-4">
+             <label for="recipe-serves-input"> Cook Time (minutes)  </label>
+             <input class = "form-control" type = "text" id="recipe-cookTime-input" placeholder=" 4" [(ngModel)] = "recipeInfo.recipeCookTime" name = "recipeServes">
+           </div>
+           <div class="form-group col-md-4">
+             <label for="recipe-picture-input"> Recipe Picture (required)</label>
+           <input id="recipe-picture-input" type="file" name="recipePictuer"
+                   ng2FileSelect [uploader]="myCoolUploader">
+           </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label> Ingredients </label>
+              <input class = "form-control" type="text" #ingredient />
+              <div class="row">
+                <div id="btns"class="col-md-6">
+                  <p id="add1" class="btn btn-primary" (click)="addIngredient(ingredient.value); ingredient.value = '' "><span class="glyphicon glyphicon-plus"></span> Ingredient </p>
+                </div>
+                <div id="btns" class="col-md-6">
+                  <p
+                  id="delete" class="btn btn-primary" (click)="removeIngredient(ingredient.value); ingredient.value = '' "><span class="glyphicon glyphicon-minus"></span> Ingredient </p>
+                </div>
+              </div>
+
+
+              <hr>
+              <ul>
+                <li id="addedPs" *ngFor="let ingredient of recipeInfo.recipeIngredients"> {{ ingredient }}
+               </li>
+
+              </ul>
+            </div>
+            <div class="form-group col-md-6">
+              <label> Directions </label>
+              <input class = "form-control" type="text" #direction />
+              <div class="row">
+                <div class="col-md-6" >
+                  <p id="add2" class="btn btn-primary" (click)="addDirection(direction.value); direction.value = '' "><span class="glyphicon glyphicon-plus"></span> Direction </p>
+                </div>
+                <div class="col-md-6" id="btns">
+                  <p id="delete" class="btn btn-primary" (click)="removeDirection(direction.value); direction.value = '' "><span class="glyphicon glyphicon-minus"></span> Direction </p>
+                </div>
+              </div>
+
+              <hr>
+              <ul>
+                <ul id="addedPs" *ngFor="let direction of recipeInfo.recipeDirections let i = index" > {{i + 1}}) {{ direction }} </ul>
+              </ul>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-9"></div>
+            <div class="col-md-3">
+              <button class="btn btn-primary save" type="button" (click)='saveNewRecipe()' data-dismiss="modal"> <span class="glyphicon glyphicon-ok"></span> Save Recipe </button>
+            </div>
+          </div>
+
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- {{data.user.fullName}}
+{{data.user.picture}} -->
+
+
+<!--
+
+<ul>
+ <li *ngFor="let recipe of userRecipeArray">
+   <h3> {{ recipe.name }} </h3>
+   <img *ngIf = "recipe.picture" [src]="baseUrl + recipe.picture" alt="">
+   <p>
+     Owned by: {{ recipe.user.fullName }}
+   </p>
+   <a [routerLink]="['/recipe', recipe._id]"> View Details </a>
+
+ </li>
+</ul> -->
