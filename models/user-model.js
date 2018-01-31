@@ -21,7 +21,9 @@ const myUserSchema = new Schema(
       default: '../../assets/images/user.svg'
     },
   savedRecipes: [{type: Schema.Types.ObjectId, ref: 'Recipe', required: true}],
-  paidRecipes: []
+  paidRecipes: [],
+  followers: [{type: Schema.Types.ObjectId, ref: 'User', required: true}],
+  following: [{type: Schema.Types.ObjectId, ref: 'User', required: true}]
   },
   {
     timestamps: true

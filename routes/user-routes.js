@@ -27,6 +27,80 @@ router.get('/api/users', (req, res, next) => {
 })//close router.get('/api/users')
 
 
+// router.post('/api/users/:id/follow', (req, res, next) =>{
+//   const toBeFollowedId = req.params.id;
+//   console.log("followingId ", req.params.id);
+//
+//   UserModel.findById(req.user._id, (err, toFollowUser) => {
+//     if (err) {
+//       res.json(err);
+//       return;
+//     }
+//
+//   UserModel.findById(toBeFollowedId, (err, toBeFollowedUser)=>{
+//     if (err) {
+//       res.json(err);
+//       return;
+//     }
+//     if(toBeFollowedUser) {
+//       toFollowUser.following.push(toBeFollowedUser)
+//       toBeFollowedUser.followers.push(toFollowUser)
+//       toFollowUser.save((err)=>{
+//         if (err) {
+//             res.json(err);
+//             return;
+//           }
+//         });
+//       toBeFollowedUser.save((err)=>{
+//         if (err) {
+//             res.json(err);
+//             return;
+//           }
+//           const data = {
+//             follower: toFollowUser,
+//             following: toBeFollowedUser
+//           }
+//         res.json(data);
+//         });
+//       }//close if statement
+//     });//second usermodel.find
+//   });//first usermodel.findBy
+// });//router.post close
+
+
+
+router.post('/api/recipes/:id/follow',(req, res, next)=>{
+  const recipeId = req.params.id;
+  console.log("recipeId ", req.params.id);
+
+  UserModel
+  .findById(req.user._id, (err, theUser) => {
+    if (err) {
+      res.json(err);
+      return;
+    }
+
+  RecipeModel.findById(recipeId, (err, theRecipe)=>{
+    if (err) {
+      res.json(err);
+      return;
+    }
+    if (theRecipe) {
+
+      theUser.savedRecipes.push(theRecipe);
+      theUser.save((err)=>{
+        if (err) {
+            res.json(err);
+            return;
+          }
+        res.json(theRecipe);
+        });
+      }
+    });
+  });
+});
+
+
 
 
 

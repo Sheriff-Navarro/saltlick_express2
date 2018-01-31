@@ -66,7 +66,45 @@ router.get('/api/profile/:id', (req, res, next) => {
   })//user model.exec
 })//end of router.get
 
+router.post('/api/profile/:id/follow', (req, res, next) =>{
+  const toBeFollowedId = req.params.id;
+  console.log("followingId ", req.params.id);
 
+  UserModel.findById(req.user._id, (err, toFollowUser) => {
+    if (err) {
+      res.json(err);
+      return;
+    }
+
+  UserModel.findById(toBeFollowedId, (err, toBeFollowedUser)=>{
+    if (err) {
+      res.json(err);
+      return;
+    }
+    if(toBeFollowedUser) {
+      toFollowUser.following.push(toBeFollowedUser)
+      toBeFollowedUser.followers.push(toFollowUser)
+      toFollowUser.save((err)=>{
+        if (err) {
+            res.json(err);
+            return;
+          }
+        });
+      toBeFollowedUser.save((err)=>{
+        if (err) {
+            res.json(err);
+            return;
+          }
+          const data = {
+            follower: toFollowUser,
+            following: toBeFollowedUser
+          }
+        res.json(data);
+        });
+      }//close if statement
+    });//second usermodel.find
+  });//first usermodel.findBy
+});//router.post close
 
 
 
