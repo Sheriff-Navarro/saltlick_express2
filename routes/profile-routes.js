@@ -40,6 +40,8 @@ router.get('/api/profile/:id', (req, res, next) => {
   .findById(req.params.id, (err, theUser) => {
     if(err) {return next(err);}
   })
+  .populate('followers')
+  .populate('following')
   .populate('savedRecipes')
   .exec((err, theUser) => {
     if(err) {
@@ -70,7 +72,8 @@ router.post('/api/profile/:id/follow', (req, res, next) =>{
   const toBeFollowedId = req.params.id;
   console.log("followingId ", req.params.id);
 
-  UserModel.findById(req.user._id, (err, toFollowUser) => {
+  UserModel
+  .findById(req.user._id, (err, toFollowUser) => {
     if (err) {
       res.json(err);
       return;
